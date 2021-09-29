@@ -3,7 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import os
 import glob
+import tempfile
 import sys
+
+import logging
+
 
 """
 pytest-xdist doesn't produce live logs without redirecting
@@ -16,17 +20,20 @@ https://github.com/pytest-dev/pytest-xdist/issues/402
 """
 sys.stdout = sys.stderr
 
+logger = logging.getLogger()
+
 
 def pytest_addoption(parser):
     parser.addoption("--server", action="store", default="localhost:8000")
 
 
 def pytest_generate_tests(metafunc):
-    sample_docs = []
-    for sample_doc in glob.glob(os.getcwd() + "/assets/documents/*"):
-        sample_docs.append(sample_doc)
-    if "sample_doc" in metafunc.fixturenames:
-        metafunc.parametrize("sample_doc", sample_docs)
+    test_docs = []
+    for count, doc in enumerate(glob.glob(os.getcwd() + "/assets/documents/*")):
+        test_docs.append((doc, count + 1))
+    logger.info(test_docs)
+    if "document" in metafunc.fixturenames:
+        metafunc.parametrize("document", test_docs)
 
 
 @pytest.fixture(scope="session")
@@ -35,10 +42,25 @@ def server(request):
 
 
 @pytest.fixture(scope="session")
-def init_driver(server, request):
+def temp_dir(request):
+    # temp directory for downloads
+    temp_dir = tempfile.TemporaryDirectory(dir=os.getcwd())
+    import logging
+
+    # logger = logging.getLogger()
+    # logger.info(temp_dir.name)
+    return temp_dir
+
+
+@pytest.fixture(scope="session")
+def init_driver(server, temp_dir, request):
+    import logging
+
+    # logger = logging.getLogger()
+    # logger.info(temp_dir)
     opts = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": os.getcwd() + "/",
+        "download.default_directory": temp_dir.name,
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "plugins.always_open_pdf_externally": True,
@@ -60,5 +82,6 @@ def init_driver(server, request):
     for item in session.items:
         cls = item.getparent(pytest.Class)
         setattr(cls.obj, "driver", web_driver)
+    # request.cls.driver = web_driver
     yield
     web_driver.close()
