@@ -23,7 +23,7 @@ class Test_Documents:
         self.driver.get(server + "/home")
         self._doc_upload(doc_path)
         self.driver.get(server + "/home")
-        time.sleep(3)
+        # time.sleep(3)
         self._doc_download(doc_count)
         # sample_doc_path = os.scandir(temp_dir)
         # logger.warning(temp_dir)
@@ -32,7 +32,7 @@ class Test_Documents:
         # logger.info(dir2)
         # time.sleep(60)
         self.driver.get(server + "/home")
-        time.sleep(5)
+        # time.sleep(5)
         self._doc_delete(doc_count)
 
     def _doc_upload(self, doc_path):

@@ -66,8 +66,10 @@ def init_driver(server, temp_dir, request):
         "plugins.always_open_pdf_externally": True,
     }
     opts.add_experimental_option("prefs", prefs)
-    opts.headless = False
-    opts.add_argument("start-maximized")
+    opts.headless = True
+    # opts.headless = False
+    opts.add_argument("--window-size=1920,1080")
+    # opts.add_argument("start-maximized")
     web_driver = webdriver.Chrome(options=opts)
     web_driver.get(server + "/login")
     username = "test@test.com"
