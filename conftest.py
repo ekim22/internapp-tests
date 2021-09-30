@@ -42,25 +42,17 @@ def server(request):
 
 
 @pytest.fixture(scope="session")
-def temp_dir(request):
+def tmp(request):
     # temp directory for downloads
-    temp_dir = tempfile.TemporaryDirectory(dir=os.getcwd())
-    import logging
-
-    # logger = logging.getLogger()
-    # logger.info(temp_dir.name)
-    return temp_dir
+    tmp = tempfile.TemporaryDirectory(dir=os.getcwd())
+    return tmp
 
 
 @pytest.fixture(scope="session")
-def init_driver(server, temp_dir, request):
-    import logging
-
-    # logger = logging.getLogger()
-    # logger.info(temp_dir)
+def init_driver(server, tmp, request):
     opts = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": temp_dir.name,
+        "download.default_directory": tmp.name,
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "plugins.always_open_pdf_externally": True,
@@ -84,6 +76,5 @@ def init_driver(server, temp_dir, request):
     for item in session.items:
         cls = item.getparent(pytest.Class)
         setattr(cls.obj, "driver", web_driver)
-    # request.cls.driver = web_driver
     yield
     web_driver.close()
