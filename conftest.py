@@ -13,9 +13,9 @@ import logging
 pytest-xdist doesn't produce live logs without redirecting
 stdout to stderr, even when log_cli is set to true. Running
 pytest without -n (therefore vanilla pytest) produces live logs
-appropriately, so it is only when running xdist this is needed.#!/usr/bin/env python
+appropriately, so it is only when running xdist this is needed.
 
-Refer to this issue for further updates:
+Refer to this issue for additional information:
 https://github.com/pytest-dev/pytest-xdist/issues/402
 """
 sys.stdout = sys.stderr
@@ -42,8 +42,8 @@ def server(request):
 
 
 @pytest.fixture(scope="session")
-def tmp(request):
-    # temp directory for downloads
+def tmp():
+    # temp directory for doc downloads that gets cleaned up after tests are done
     tmp = tempfile.TemporaryDirectory(dir=os.getcwd())
     return tmp
 
@@ -59,7 +59,6 @@ def init_driver(server, tmp, request):
     }
     opts.add_experimental_option("prefs", prefs)
     opts.headless = True
-    # opts.headless = False
     opts.add_argument("--window-size=1920,1080")
     # opts.add_argument("start-maximized")
     web_driver = webdriver.Chrome(options=opts)
