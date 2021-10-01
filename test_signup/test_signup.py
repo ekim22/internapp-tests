@@ -2,10 +2,6 @@ import pytest
 import random
 import string
 
-import logging
-
-logger = logging.getLogger()
-
 
 @pytest.mark.usefixtures("init_driver")
 class Test_Signup:
