@@ -1,13 +1,12 @@
-import pytest
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import os
 import glob
 import tempfile
 import sys
-
 import logging
 
+import pytest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 """
 pytest-xdist doesn't produce live logs without redirecting
@@ -18,9 +17,8 @@ appropriately, so it is only when running xdist this is needed.
 Refer to this issue for additional information:
 https://github.com/pytest-dev/pytest-xdist/issues/402
 """
-sys.stdout = sys.stderr
-
 logger = logging.getLogger()
+sys.stdout = sys.stderr
 
 
 def pytest_addoption(parser):
