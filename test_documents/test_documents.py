@@ -1,5 +1,7 @@
-import pytest
 import time
+
+import pytest
+from selenium.common.exceptions import NoSuchElementException
 
 
 @pytest.mark.usefixtures("init_driver")
@@ -9,7 +11,7 @@ class Test_Documents:
         doc_count = str(document[1])
 
         # self.driver.get(server + "/home")
-        self._doc_upload(doc_path)
+        self._doc_upload(doc_count, doc_path)
 
         self.driver.get(server + "/home")
         # time.sleep(3)
@@ -20,7 +22,17 @@ class Test_Documents:
         time.sleep(3)
         self._doc_delete(doc_count)
 
-    def _doc_upload(self, doc_path):
+    def _doc_upload(self, doc_count, doc_path):
+        try:
+            # There should be no documents visible at the point of upload
+            self.driver.find_element_by_xpath(
+                '//*[@id="documentTableOnHomePage"]/div[1]/table/tbody/tr['
+                + doc_count
+                + "]/td[7]/a/span"
+            ).is_displayed()
+        except NoSuchElementException:
+            assert True
+
         self.driver.find_element_by_xpath(
             "//*[@id='uploadForm1']/div[1]/input"
         ).send_keys(doc_path)
