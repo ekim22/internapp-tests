@@ -15,7 +15,7 @@ class Test_Documents:
         self._doc_download(doc_count)
         self.driver.get(server + "/home")
         # 2 secs will fail; 3 appears to be optimal
-        sleep(3)
+        sleep(2)
         self._doc_delete(doc_count)
 
     def _doc_upload(self, doc_count, doc_path):

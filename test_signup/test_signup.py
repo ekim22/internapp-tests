@@ -18,6 +18,7 @@ class Test_Signup:
     first_name = "Selenium"
     last_name = "Test"
     address = "1000 Testing Ave"
+    phone = "123-456-7897"
     city = "Testsite"
     state = "TS"
     zip_code = "10000"
@@ -32,6 +33,7 @@ class Test_Signup:
         "fnameTxt": first_name,
         "lnameTxt": last_name,
         "addressTxt": address,
+        "phone": phone,
         "stateTxt": city,
         "cityTxt": state,
         "zipTxt": zip_code,
@@ -40,10 +42,14 @@ class Test_Signup:
     def test_signup(self, server):
         self.driver.get(server + "/signup")
         for form_id, form_value in self.signup_form.items():
+            form_field = self.driver.find_element_by_xpath('//*[@id="' + form_id + '"]')
+            assert form_field.is_displayed(), "Can't find " + form_id
             self.driver.find_element_by_xpath('//*[@id="' + form_id + '"]').send_keys(
                 form_value
             )
         self.driver.find_element_by_xpath('//*[@id="signupBtn"]').click()
+
+        assert self.driver.current_url == server + "/home", "Was unable to get to /home"
 
         assert (
             self.driver.find_element_by_xpath("/html/body/div/h1").text

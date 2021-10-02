@@ -17,7 +17,7 @@ appropriately, so it is only when running xdist this is needed.
 Refer to this issue for additional information:
 https://github.com/pytest-dev/pytest-xdist/issues/402
 """
-sys.stdout = sys.stderr
+# sys.stdout = sys.stderr
 
 
 def pytest_addoption(parser):
