@@ -4,7 +4,7 @@ import string
 import pytest
 
 
-@pytest.mark.usefixtures("init_driver")
+@pytest.mark.usefixtures("driver", "logger")
 class Test_Signup:
     # Signup form sample data
     email = (

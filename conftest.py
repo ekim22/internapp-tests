@@ -17,7 +17,6 @@ appropriately, so it is only when running xdist this is needed.
 Refer to this issue for additional information:
 https://github.com/pytest-dev/pytest-xdist/issues/402
 """
-logger = logging.getLogger()
 sys.stdout = sys.stderr
 
 
@@ -28,8 +27,7 @@ def pytest_addoption(parser):
 def pytest_generate_tests(metafunc):
     test_docs = []
     for count, doc in enumerate(glob.glob(os.getcwd() + "/assets/documents/*")):
-        test_docs.append((doc, count + 1))
-    logger.info(test_docs)
+        test_docs.append((doc, str(count + 1)))
     if "document" in metafunc.fixturenames:
         metafunc.parametrize("document", test_docs)
 
@@ -40,6 +38,16 @@ def server(request):
 
 
 @pytest.fixture(scope="session")
+def logger(request):
+    logger = logging.getLogger()
+    session = request.node
+    for item in session.items:
+        cls = item.getparent(pytest.Class)
+        setattr(cls.obj, "logger", logger)
+    yield
+
+
+@pytest.fixture(scope="session")
 def tmp():
     # temp directory for doc downloads that gets cleaned up after tests are done
     tmp = tempfile.TemporaryDirectory(dir=os.getcwd())
@@ -47,7 +55,7 @@ def tmp():
 
 
 @pytest.fixture(scope="session")
-def init_driver(server, tmp, request):
+def driver(server, tmp, request):
     opts = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": tmp.name,

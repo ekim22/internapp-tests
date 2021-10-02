@@ -5,7 +5,7 @@ import pytest
 from selenium.webdriver.common.keys import Keys
 
 
-@pytest.mark.usefixtures("init_driver")
+@pytest.mark.usefixtures("driver", "logger")
 class Test_Application:
     # Application data
     application_email = "test_application@pytest.com"
@@ -25,7 +25,7 @@ class Test_Application:
 
         # Assert bio applicant's signature and printed name is the randomly generated string
         self.driver.get(server + "/home")
-        self._test_signatures("bio")
+        self._check_signatures("bio")
 
     def test_itec_application(self, server):
         # Login with premade applicant
@@ -38,7 +38,7 @@ class Test_Application:
 
         # Assert itec applicant's signature and printed name is the randomly generated string
         self.driver.get(server + "/home")
-        self._test_signatures("itec")
+        self._check_signatures("itec")
 
     def _login(self):
         username_field = self.driver.find_element_by_xpath("//*[@id='emailTxt']")
@@ -58,7 +58,7 @@ class Test_Application:
         printed_field.send_keys(self.application_signature)
         printed_field.send_keys(Keys.RETURN)
 
-    def _test_signatures(self, app_type):
+    def _check_signatures(self, app_type):
         if app_type == "bio":
             app_row = 1
             sig_row = 37
@@ -79,4 +79,4 @@ class Test_Application:
         assert (
             self.application_signature == applicant_signature
             and self.application_signature == applicant_printed_name
-        )
+        ), "Signatures do not match"

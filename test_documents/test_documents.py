@@ -4,11 +4,11 @@ import pytest
 from selenium.common.exceptions import NoSuchElementException
 
 
-@pytest.mark.usefixtures("init_driver")
+@pytest.mark.usefixtures("driver", "logger")
 class Test_Documents:
     def test_document_ops(self, server, document):
         doc_path = document[0]
-        doc_count = str(document[1])
+        doc_count = document[1]
 
         self._doc_upload(doc_count, doc_path)
         self.driver.get(server + "/home")
