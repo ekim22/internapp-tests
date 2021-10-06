@@ -34,7 +34,7 @@ class Test_Documents:
         ).send_keys(doc_path)
         self.driver.find_element_by_xpath("//*[@id='uploadForm1']").click()
         self.driver.find_element_by_xpath("//*[@id='uploadResume']").click()
-        sleep(2)
+        sleep(1)
 
     def _doc_download(self, doc_count, tmp):
         assert self.driver.find_element_by_xpath(
@@ -49,7 +49,7 @@ class Test_Documents:
             + "]/td[7]/a/span"
         ).click()
         # Probably need some sleep duration for this to work.
-        sleep(4)
+        sleep(3)
         if not (os.listdir(tmp.name)):
             assert False, "Tmp dir is empty!"
 
