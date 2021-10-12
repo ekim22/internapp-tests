@@ -19,22 +19,22 @@ class Test_Documents:
 
     def _doc_upload(self, doc_count, doc_path):
         try:
-            # There should be no documents visible at the point of upload
-            self.driver.find_element_by_xpath(
+            doc_exists = self.driver.find_element_by_xpath(
                 '//*[@id="documentTableOnHomePage"]/div[1]/table/tbody/tr['
                 + doc_count
                 + "]/td[7]/a/span"
             ).is_displayed()
-            assert False, "A document already exists in row " + doc_count
+            if doc_exists:
+                self.logger.warning("A document already exists in row " + doc_count)
         except NoSuchElementException:
-            assert True
+            self.logger.info("Document table is clear")
 
         self.driver.find_element_by_xpath(
             "//*[@id='uploadForm1']/div[1]/input"
         ).send_keys(doc_path)
         self.driver.find_element_by_xpath("//*[@id='uploadForm1']").click()
         self.driver.find_element_by_xpath("//*[@id='uploadResume']").click()
-        sleep(1)
+        sleep(3)
 
     def _doc_download(self, doc_count, tmp):
         assert self.driver.find_element_by_xpath(
