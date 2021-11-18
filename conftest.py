@@ -70,8 +70,8 @@ def driver(server, tmp, request):
     # opts.add_argument("start-maximized")
     web_driver = webdriver.Chrome(options=opts)
     web_driver.get(server + "/login")
-    username = "test@test.com"
-    password = "123456"
+    username = "admin@pytest.com"
+    password = "#6x;46PFyK^z\}v-"
 
     username_field = web_driver.find_element_by_xpath("//*[@id='emailTxt']")
     username_field.send_keys(username)
