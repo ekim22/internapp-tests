@@ -62,3 +62,5 @@ pytest.ini
 
 # Vim swap files
 .*.sw*
+/.idea/
+/assets/style.css
