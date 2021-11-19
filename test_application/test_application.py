@@ -59,6 +59,8 @@ class Test_Application:
         printed_field.send_keys(Keys.RETURN)
 
     def _check_signatures(self, app_type):
+        """Adding this because I forgot. This is for View Document Details, not Edit Document,
+        to verify that the signatures are the same."""
         if app_type == "bio":
             app_row = 1
             sig_row = 37
