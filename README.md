@@ -1,6 +1,11 @@
 # GGC InternApp Tests (Pytest/Selenium)
 Tests written using Pytest and Selenium in Python 3.9. They were made to automate the functional testing of account, document, and application operations.
 
+## Installing Test Environment
+You must have a Conda environment management system (e.g. Anaconda3 or Miniconda3) installed on your system. Then you may download this repo and run the ``conda env create -f environment.yml`` command to install the package dependencies. You can verify that the new environment was installed correctly by running the ``conda env list`` command and seeing "internapp-pytest" listed as an environment. Activate the environment by running ``conda activate internapp-pytest`` before initiating a test run using pytest.
+
+Note: the default target for this test suite is localhost:8000. Ensure the internapp is running at this address or you may supply an argument to the --server option on the command line if the app exists on a different address (e.g. --server="localhost:8004" if the app is running on port 8004).
+
 ## Account tests
 [Test_signup.py](test_signup/test_signup.py) tests the signup feature by randomizing an email and password and filling out the other necessary fields and asserting 
 that the page has navigated to /home. Failure would imply a change to the codebase is interfering with this essential operation.
