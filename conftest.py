@@ -25,6 +25,7 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):
+    print("Current working directory: " + os.getcwd())
     test_docs = []
     for count, doc in enumerate(glob.glob(os.getcwd() + "/assets/documents/*")):
         test_docs.append((doc, str(count + 1)))
